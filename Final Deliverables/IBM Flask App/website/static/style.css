@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Caveat&family=Comic+Neue&family=Indie+Flower&family=Righteous&family=Rubik+Dirt&family=Rubik+Distressed&display=swap');@import url('https://fonts.googleapis.com/css2?family=Anton&family=Comic+Neue&family=Indie+Flower&family=Righteous&family=Rubik+Dirt&family=Rubik+Distressed&display=swap');
+
+body,html{
+    margin: 0px;
+    height: 100%;
+}
+
+#wrap{
+    min-height: 85%;
+}
+
+#main{
+    overflow: auto;
+    padding-bottom: 5rem;
+}
+
+#bgpic{
+    background: url('../static/fleet.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 60vh;
+    width: 100vw;
+}
+
+.container.pt-3.bg-light {
+    padding:1rem;
+    margin-bottom:1rem;
+}
+
+.form-group.row{
+    margin:0.2rem;
+}
+
+#historytable {
+    counter-reset: tableCount;     
+}
+.counterCell:before {              
+    content: counter(tableCount); 
+    counter-increment: tableCount; 
+}
+
+h1{
+    margin: 1rem;
+    font-family: 'Righteous';
+}
+
+h3{
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-36 { font-size: 36px; }
+
+.card{
+    padding:1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+}
