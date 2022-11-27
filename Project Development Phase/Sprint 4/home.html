@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
+<div class="d-flex" id="bgpic">
+</div>
+<div align="center" style="font-family:'Anton'; font-size: 3rem;margin:2rem;">Want to improve the profits and performance of your fleet vehicles?<br>Use our best in class technology for accurate predictions.
+<br><span class="text-primary" style="font-size: 2.5rem">Sign up now!</span></div>
+<hr>
+<div class="container">
+  <br>
+  <h3>Our Cutomer Feedback</h3>
+  <br>
+  <div class="card-deck">
+    {% for ureview in reviews%}
+      <blockquote class="blockquote card">
+        <div>
+          {% for stars in range(ureview[3]) %}
+        <span class="material-icons">
+          star
+        </span>
+        {% endfor %}
+        </div>
+        <p class="mb-0 card-text" style="padding:1rem">{{ureview[2]}}</p>
+        <footer class="blockquote-footer">{{ureview[0]+' '+ureview[1]}}</footer>
+      </blockquote>
+    {%endfor%}
+  </div>
+</div>
+{% endblock %}
