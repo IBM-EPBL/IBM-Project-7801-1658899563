@@ -1,7 +1,0 @@
-
-Flask
-Werkzeug
-Flask-SQLAlchemy
-flask-login
-pandas
-scikit-learn==1.1.3
