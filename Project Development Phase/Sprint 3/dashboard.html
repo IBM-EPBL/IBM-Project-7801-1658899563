@@ -1,0 +1,230 @@
+{% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block content
+%}
+<h1 align="center">Dashboard</h1>
+<div class="container pt-3 bg-light">
+  <form method="POST">
+  <h3>New Prediction</h3>
+  <hr>
+  <div class="form-group row">
+    <label for="vmodel">Vehicle Model</label>
+    <input
+      type="text"
+      class="form-control"
+      id="vmodel"
+      name="vmodel"
+      placeholder="Enter vehicle model"
+    />
+  </div>
+    <div class="form-group row">
+      <label for="email">Distance (Km)</label>
+      <input
+        type="text"
+        class="form-control"
+        id="distance"
+        name="distance"
+        placeholder="Enter distance"
+      />
+    </div>
+    <div class="form-group row">
+      <label for="speed">Speed (Km/hr)</label>
+      <input
+        type="text"
+        class="form-control"
+        id="speed"
+        name="speed"
+        placeholder="Enter speed"
+      />
+    </div>
+    <div class="form-group row">
+      <label for="temp_inside">Engine Temperature (Celsius)</label>
+      <input
+        type="text"
+        class="form-control"
+        id="temp_inside"
+        name="temp_inside"
+        placeholder="Enter engine temperature"
+      />
+    </div>
+    <div class="form-group row">
+      <label for="temp_outside">Environment Temperature (Celsius)</label>
+      <input
+        type="text"
+        class="form-control"
+        id="temp_outside"
+        name="temp_outside"
+        placeholder="Enter environment temperature"
+      />
+    </div>
+    <div class="row">
+      <div class="form-group col">
+        <label for="gas_type">Fuel Type</label>
+        <select class="form-control" id="gas_type" name="gas_type">
+          <option value="0">E10 Petrol</option>
+          <option value="1">SP98 Petrol</option>
+        </select>
+      </div>
+  
+      <div class="form-group col">
+        <label for="ac">AC </label>
+        <select class="form-control" id="ac" name="ac">
+          <option value="0">Off</option>
+          <option value="1">On</option>
+        </select>
+      </div>
+  
+      <div class="form-group col">
+        <label for="rain">Rainy day?</label>
+        <select class="form-control" id="rain" name="rain">
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+        </select>
+      </div>
+  
+      <div class="form-group col">
+        <label for="sun">Sunny day? </label>
+        <select class="form-control" id="sun" name="sun">
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+        </select>
+      </div>
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-primary btn-lg btn-block" name="newprediction">Predict</button>
+    <br/> 
+  </form>
+  <br/>
+  <div class="container pt-3" style="display:{{display}}">
+    <h4>Predicted fuel consumption is <span class="text-danger">{{prediction_result|round(2)}}</span> (litres/100Km).
+      <br>
+        Predicted mileage is <span class="text-danger">{{(100/prediction_result)|round(2)}}</span> Km per litre.
+    </h4>
+  </div>
+</div>
+<hr>
+<div class="container bg-dark pt-3 text-light" >
+  <h3>Prediction History</h3>
+  <table class="table table-hover table-striped table-dark" id="historytable">
+    <tr>
+    <thead class="thead-light">
+      <th>SNo</th>
+      <th>Date and Time</th>
+      <th>Vehicle Model</th>
+      <th>Distance (Km)</th>
+      <th>Speed (Km/hr)</th>
+      <th>Engine Temperature (Celsius)</th>
+      <th>Environment Temperature (Celsius)</th>
+      <th>Fuel Type</th>
+      <th>AC</th>
+      <th>Rainy Day</th>
+      <th>Sunny Day</th>
+      <th>Predicted Mileage (Km/l)</th>
+      <th>Delete</th>
+    </thead>
+  </tr>
+  {% for pred in user.predictions %}
+  <tr>
+    <td class="counterCell"></td>
+    <td>{{pred.date}}</td>
+    <td>{{pred.vmodel}}</td>
+    <td>{{pred.distance}}</td>
+    <td>{{pred.speed}}</td>
+    <td>{{pred.temp_inside}}</td>
+    <td>{{pred.temp_outside}}</td>
+    <td>{% if pred.gas_type==0 %}
+        <span>E10 Petrol</span>
+        {% else %}
+        <span>SP98 Petrol</span>
+        {% endif %}
+    </td>
+    <td>{% if pred.ac==0 %}
+      <span>Off</span>
+      {% else %}
+      <span>On</span>
+      {% endif %}
+  </td>
+  <td>{% if pred.rain==1 %}
+    <span>Yes</span>
+    {% else %}
+    <span>No</span>
+    {% endif %}
+  </td>
+  <td>{% if pred.sun==1 %}
+    <span>Yes</span>
+    {% else %}
+    <span>No</span>
+    {% endif %}
+  </td>
+  <td class="text-warning">{{(100/pred.consume) | round(2)}}</td>
+  <td class="align-middle">
+    <button type="button" class="close" onClick="deleteNote({{ pred.id }})">
+      <span class="material-icons md-light md-36">
+        delete
+        </span>
+    </button>
+  </td>
+  </tr>
+  {%endfor%}
+  </table>
+</div>
+<br>
+<hr>
+<div class="container pt-3 bg-light">
+  <form method="POST"> 
+  <h3>Review and Feedback</h3>
+  <hr>
+  <div class="container pt-3 bg-success text-white" style="display:{{reviewdisplay}}">
+    <h5>Published Review
+      <span class="pull-right">
+        {% for stars in range(stars) %}
+        <span class="material-icons">
+          star
+        </span>
+        {% endfor %}
+      </span>
+    </h5>
+    <hr>
+    <div class="d-flex justify-content-center" style="font-family:'Caveat';font-size:2.2rem;padding:1rem;">" {{userreview}} "</div>
+  </div>
+  <br><br>
+  <div class="form-group">
+    <label class="h5" for="rating">Rating</label>
+  <br>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1">
+    <label class="form-check-label" for="inlineRadio1">Dissapointing</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="2">
+    <label class="form-check-label" for="inlineRadio2">Bad</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="3">
+    <label class="form-check-label" for="inlineRadio3">Okay</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="4">
+    <label class="form-check-label" for="inlineRadio2">Satisfied</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="5">
+    <label class="form-check-label" for="inlineRadio3">Loved It!</label>
+  </div>
+  </div>
+
+    <div class="form-group">
+      <label class="h5" for="comment">Comments</label>
+      <textarea
+        class="form-control"
+        id="comment"
+        name="comment"
+        maxlength="300"
+        rows="3"
+        placeholder="Write your opinion about our predictions here..."
+      ></textarea>
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-primary btn-lg btn-block" name="submitreview">{{reviewbtn}}</button>
+    <button type="button" style="display:{{reviewdisplay}}" class="btn btn-danger btn-lg btn-block" name="deletereview" onClick="deleteReview({{user.id}})">Delete Review</button> 
+  </form>
+</div>
+{% endblock %}
